@@ -1,8 +1,8 @@
-const API_URL = 'v1';
+const API_URL = "v1";
 
 // Load planets and return as JSON.
 async function httpGetPlanets() {
-  const response = await fetch(`${API_URL}/planets`);
+  const response = await fetch(`/${API_URL}/planets`);
   return await response.json();
 }
 
@@ -25,7 +25,7 @@ async function httpSubmitLaunch(launch) {
       },
       body: JSON.stringify(launch),
     });
-  } catch(err) {
+  } catch (err) {
     return {
       ok: false,
     };
@@ -38,7 +38,7 @@ async function httpAbortLaunch(id) {
     return await fetch(`${API_URL}/launches/${id}`, {
       method: "delete",
     });
-  } catch(err) {
+  } catch (err) {
     console.log(err);
     return {
       ok: false,
@@ -46,9 +46,4 @@ async function httpAbortLaunch(id) {
   }
 }
 
-export {
-  httpGetPlanets,
-  httpGetLaunches,
-  httpSubmitLaunch,
-  httpAbortLaunch,
-};
+export { httpGetPlanets, httpGetLaunches, httpSubmitLaunch, httpAbortLaunch };

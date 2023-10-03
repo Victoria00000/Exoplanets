@@ -1,4 +1,5 @@
-const parse = require("csv-parse");
+const { parse } = require("csv-parse");
+const path = require("path");
 const fs = require("fs");
 
 const habitablePlanets = [];
@@ -23,23 +24,23 @@ function loadPlanetsData() {
           columns: true,
         })
       )
-      .on("data", async (data) => {
+      .on("data", (data) => {
         if (isHabitablePlanet(data)) {
-          savePlanet(data);
+          habitablePlanets.push(data);
         }
       })
       .on("error", (err) => {
         console.log(err);
         reject(err);
       })
-      .on("end", async () => {
-        const countPlanetsFound = (await getAllPlanets()).length;
-        console.log(`${countPlanetsFound} habitable planets found!`);
+      .on("end", () => {
+        console.log(`${habitablePlanets.length} habitable planets found!`);
         resolve();
       });
   });
 }
 
 module.exports = {
+  loadPlanetsData,
   planets: habitablePlanets,
 };
