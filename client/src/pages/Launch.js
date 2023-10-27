@@ -1,22 +1,27 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Appear, Button, Loading, Paragraph } from "arwes";
 import Clickable from "../components/Clickable";
 
-const Launch = ({ planets, entered, submitLaunch, isPendingLaunch }) => {
+const Launch = (props) => {
   //
-  console.log(planets);
+  console.log(props.planets);
+  console.log(props.planets.planets);
+  console.log(Array.isArray(props.planets));
+  console.log(typeof props.planets);
+  console.log(Array.isArray(props.planets.planets));
+  const PLANETS = props.planets.planets;
   const selectorBody = useMemo(() => {
-    return planets.map((planet) => (
+    return PLANETS.map((planet) => (
       <option value={planet.kepler_name} key={planet.kepler_name}>
         {planet.kepler_name}
       </option>
     ));
-  }, [planets]);
+  }, []);
 
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <Appear id="launch" animate show={entered}>
+    <Appear id="launch" animate show={props.entered}>
       <Paragraph>
         Schedule a mission launch for interstellar travel to one of the Kepler
         Exoplanets.
@@ -34,7 +39,7 @@ const Launch = ({ planets, entered, submitLaunch, isPendingLaunch }) => {
       </ul>
 
       <form
-        onSubmit={submitLaunch}
+        onSubmit={props.submitLaunch}
         style={{
           display: "inline-grid",
           gridTemplateColumns: "auto auto",
@@ -66,15 +71,15 @@ const Launch = ({ planets, entered, submitLaunch, isPendingLaunch }) => {
         <Clickable>
           <Button
             animate
-            show={entered}
+            show={props.entered}
             type="submit"
             layer="success"
-            disabled={isPendingLaunch}
+            disabled={props.isPendingLaunch}
           >
             Launch Mission ✔
           </Button>
         </Clickable>
-        {isPendingLaunch && <Loading animate small />}
+        {props.isPendingLaunch && <Loading animate small />}
       </form>
     </Appear>
   );
