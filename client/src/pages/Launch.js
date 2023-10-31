@@ -1,29 +1,29 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { Appear, Button, Loading, Paragraph } from "arwes";
 import Clickable from "../components/Clickable";
 
 const Launch = (props) => {
-  //
-  console.log(props.planets);
-  console.log(props.planets.planets);
-  console.log(Array.isArray(props.planets));
-  console.log(typeof props.planets);
-  console.log(Array.isArray(props.planets.planets));
-
-  const PLANETS = props.planets.planets;
+  const { planets, entered, submitLaunch, isPendingLaunch } = props;
 
   const selectorBody = useMemo(() => {
-    return PLANETS.map((planet) => (
-      <option value={planet.kepler_name} key={planet.kepler_name}>
-        {planet.kepler_name}
+    if (planets && planets.planets && planets.planets.length > 0) {
+      return planets.planets.map((planet) => (
+        <option value={planet.kepler_name} key={planet.kepler_name}>
+          {planet.kepler_name}
+        </option>
+      ));
+    }
+    return (
+      <option value="" key="loading">
+        Loading...
       </option>
-    ));
-  }, []);
+    );
+  }, [planets]);
 
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <Appear id="launch" animate show={props.entered}>
+    <Appear id="launch" animate show={entered}>
       <Paragraph>
         Schedule a mission launch for interstellar travel to one of the Kepler
         Exoplanets.
@@ -41,7 +41,7 @@ const Launch = (props) => {
       </ul>
 
       <form
-        onSubmit={props.submitLaunch}
+        onSubmit={submitLaunch}
         style={{
           display: "inline-grid",
           gridTemplateColumns: "auto auto",
@@ -73,15 +73,15 @@ const Launch = (props) => {
         <Clickable>
           <Button
             animate
-            show={props.entered}
+            show={entered}
             type="submit"
             layer="success"
-            disabled={props.isPendingLaunch}
+            disabled={isPendingLaunch || !selectorBody}
           >
             Launch Mission ✔
           </Button>
         </Clickable>
-        {props.isPendingLaunch && <Loading animate small />}
+        {isPendingLaunch && <Loading animate small />}
       </form>
     </Appear>
   );
