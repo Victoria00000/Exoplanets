@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Appear, Button, Loading, Paragraph } from "arwes";
 import Clickable from "../components/Clickable";
 
@@ -9,7 +9,9 @@ const Launch = (props) => {
   console.log(Array.isArray(props.planets));
   console.log(typeof props.planets);
   console.log(Array.isArray(props.planets.planets));
+
   const PLANETS = props.planets.planets;
+
   const selectorBody = useMemo(() => {
     return PLANETS.map((planet) => (
       <option value={planet.kepler_name} key={planet.kepler_name}>
