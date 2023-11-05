@@ -6,8 +6,8 @@ const Launch = (props) => {
   const { planets, entered, submitLaunch, isPendingLaunch } = props;
 
   const selectorBody = useMemo(() => {
-    if (planets && planets.planets && planets.planets.length > 0) {
-      return planets.planets.map((planet) => (
+    if (planets && planets.length > 0) {
+      return planets.map((planet) => (
         <option value={planet.kepler_name} key={planet.kepler_name}>
           {planet.kepler_name}
         </option>
