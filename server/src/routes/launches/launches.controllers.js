@@ -1,6 +1,8 @@
 const {
   getAllLaunches,
   addNewLaunch,
+  existsLaunchWithId,
+  abortLaunchById,
 } = require("../../models/launches.model.js");
 
 function httpGetAllLaunches(req, res) {
@@ -9,7 +11,6 @@ function httpGetAllLaunches(req, res) {
 
 function httpAddNewLaunch(req, res) {
   const launch = req.body;
-
   if (
     !launch.mission ||
     !launch.rocket ||
@@ -18,15 +19,23 @@ function httpAddNewLaunch(req, res) {
   ) {
     return res.status(400).json({ error: "Missing launch properties" });
   }
-
   launch.launchDate = new Date(launch.launchDate);
   if (isNaN(launch.launchDate)) {
     return res.status(400).json({ error: "Invalid launch date" });
   }
-
   addNewLaunch(launch);
-
   return res.status(201).json(launch);
 }
 
-module.exports = { httpGetAllLaunches, httpAddNewLaunch };
+function httpAbortLaunch(req, res) {
+  const launchId = Number(req.params.id);
+  //if launch does not exist
+  if (!existsLaunchWithId(launchId)) {
+    return res.status(404).json({ error: "Launch does not exist" });
+  }
+  //if launch does exist
+  const aborted = abortLaunchById(launchId);
+  return res.status(200).json(aborted);
+}
+
+module.exports = { httpGetAllLaunches, httpAddNewLaunch, httpAbortLaunch };

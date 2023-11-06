@@ -18,6 +18,10 @@ launches.set(launch.flightNumber, launch);
 //y el valor (value) asociado con esa clave será el objeto launch completo.
 //console.log(launches.get(100)); // Devolverá el objeto `launch` relacionado con el número de vuelo 100
 
+function existsLaunchWithId(launchId) {
+  return launches.has(launchId);
+}
+
 function getAllLaunches() {
   return Array.from(launches.values());
 }
@@ -35,7 +39,16 @@ function addNewLaunch(launch) {
   );
 }
 
+function abortLaunchById(launchId) {
+  const aborted = launches.get(launchId);
+  aborted.upcoming = false;
+  aborted.success = false;
+  return aborted;
+}
+
 module.exports = {
+  existsLaunchWithId,
   getAllLaunches,
   addNewLaunch,
+  abortLaunchById,
 };
